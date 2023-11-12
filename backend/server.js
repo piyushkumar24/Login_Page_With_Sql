@@ -7,16 +7,16 @@ app.use(cors());
 app.use(express.json());
 
 const db=mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"",
-    database:"signup"
+    host:"sql12.freemysqlhosting.net",
+    user:"sql12661216",
+    password:"RYz25QYwBj",
+    database:"sql12661216"
 })
 
 app.post('/signup', (req, res) => {
     console.log('Received data:', req.body);
 
-    const sql = "INSERT INTO login (`name`, `email`, `password`) VALUES (?, ?, ?)";
+    const sql = "INSERT INTO users (`name`, `email`, `password`) VALUES (?, ?, ?)";
     const values = [req.body.name, req.body.email, req.body.password];
     db.query(sql, values, (err, data) => {
         if (err) {
@@ -32,7 +32,7 @@ app.post('/signup', (req, res) => {
 app.post('/login', (req, res) => {
     console.log('Received data:', req.body);
 
-    const sql = "SELECT * FROM login WHERE `email` = ? AND `password` = ?";
+    const sql = "SELECT * FROM users WHERE `email` = ? AND `password` = ?";
     db.query(sql, [req.body.email, req.body.password], (err, result) => {
         if (err) {
             return res.json("Error");
