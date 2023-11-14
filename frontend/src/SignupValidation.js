@@ -3,7 +3,6 @@ function SignupValidation(values) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordPattern = /.+/;
 
-
     if (values.name === '') {
         errors.name = 'Name should not be empty';
     } else {
