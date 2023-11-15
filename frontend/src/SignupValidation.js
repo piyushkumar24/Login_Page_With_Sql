@@ -8,7 +8,6 @@ function SignupValidation(values) {
     } else {
         errors.name = '';
     }
-
     if (values.email === '') {
         errors.email = 'Email should not be empty';
     } else if (!emailPattern.test(values.email)) {
