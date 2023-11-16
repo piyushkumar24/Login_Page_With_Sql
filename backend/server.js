@@ -28,7 +28,6 @@ app.post('/signup', (req, res) => {
     });
 });
 
-
 app.post('/login', (req, res) => {
     console.log('Received data:', req.body);
 
@@ -46,7 +45,6 @@ app.post('/login', (req, res) => {
         }
     });
 });
-
 
 app.listen(8081,()=>{
     console.log("Server is listening on port 8081");
