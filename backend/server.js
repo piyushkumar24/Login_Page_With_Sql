@@ -28,6 +28,7 @@ app.post('/signup', (req, res) => {
     });
 });
 
+
 app.post('/login', (req, res) => {
     console.log('Received data:', req.body);
 
