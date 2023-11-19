@@ -15,7 +15,6 @@ function Signup() {
     const handleInput = (event) => {
         setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
     };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         const validationErrors = SignupValidation(values);
