@@ -26,7 +26,7 @@ function Signup() {
             validationErrors.email === '' &&
             validationErrors.password === ''
         ) {
-            axios.post('https://sql-login-page-backend.onrender.com/signup', values)
+            axios.post('http://localhost:8081/signup', values)
                 .then((res) => {
                     navigate('/');
                 })
