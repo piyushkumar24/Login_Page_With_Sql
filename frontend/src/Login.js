@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import validation from './LoginValidation';
 import axios from 'axios';
+import ReCAPTCHA from 'react-google-recaptcha'; 
 
 function Login() {
     const [values, setValues] = useState({
         email: '',
-        password: ''
+        password: '',
     });
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
+    const [captchaValue, setCaptchaValue] = useState(null); 
 
     const handleInput = (event) => {
-        setValues(prev => ({ ...prev, [event.target.name]: [event.target.value] }));
+        setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+    };
+
+    const handleCaptchaChange = (value) => {
+        setCaptchaValue(value); 
     };
 
     const handleSubmit = (event) => {
@@ -21,16 +26,19 @@ function Login() {
         const validationErrors = validation(values);
         setErrors(validationErrors);
 
-        if (validationErrors.email === '' && validationErrors.password === '') {
-            axios.post('https://sql-login-page-backend.onrender.com/login', values)
+        if (validationErrors.email === '' && validationErrors.password === '' && captchaValue) {
+            axios
+                .post('http://localhost:8081/login', { ...values, captchaValue }) 
                 .then((res) => {
-                    if (res.data === "Success") {
-                        navigate('/home');
+                    if (res.data === 'Success') {
+                        navigate('/home', { state: { email: values.email } });
                     } else {
-                        alert("No record existed");
+                        alert('No record existed');
                     }
                 })
                 .catch((err) => console.log(err));
+        } else {
+            alert('Please complete the reCAPTCHA verification.');
         }
     };
 
@@ -40,20 +48,30 @@ function Login() {
                 <h2 className='text-white'>Sign-In</h2>
                 <form action=" " onSubmit={handleSubmit}>
                     <div className='mb-3'>
-                        <label htmlFor='email' className='text-white'><strong>Email</strong></label>
-                        <input type='email' placeholder='Enter Email' name='email'
-                            onChange={handleInput} className='form-control rounded -0'></input>
+                        <label htmlFor='email' className='text-white'>
+                            <strong>Email</strong>
+                        </label>
+                        <input type='email' placeholder='Enter Email' name='email' onChange={handleInput} className='form-control rounded -0'></input>
                         {errors.email && <span className='text-danger'>{errors.email}</span>}
                     </div>
                     <div className='mb-3'>
-                        <label htmlFor='password' className='text-white'><strong>Password</strong></label>
-                        <input type='password' placeholder='Enter Password' name='password'
-                            onChange={handleInput} className='form-control rounded -0'></input>
+                        <label htmlFor='password' className='text-white'>
+                            <strong>Password</strong>
+                        </label>
+                        <input type='password' placeholder='Enter Password' name='password' onChange={handleInput} className='form-control rounded -0'></input>
                         {errors.password && <span className='text-danger'>{errors.password}</span>}
                     </div>
-                    <button type='submit' className='btn btn-success w-100 rounded-0'>Log In</button>
+                    <div className='mb-3'>
+                        <ReCAPTCHA sitekey="6Ld77hQpAAAAAAr-Mr_2UCnZDxahyQWKf2EOv5uF" onChange={handleCaptchaChange} /> 
+                    </div>
+                    <button type='submit' className='btn btn-success w-100 rounded-0'>
+                        Log In
+                    </button>
+                    <Link to="/forgotpassword" className='text-white'>Forgot Password?</Link>
                     <p className='text-white'>Thereby by signing in, you agree with our terms & policies.</p>
-                    <Link to="./signup" className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none'>Create Account</Link>
+                    <Link to="./signup" className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none'>
+                        Create Account
+                    </Link>
                 </form>
             </div>
         </div>
@@ -61,5 +79,3 @@ function Login() {
 }
 
 export default Login;
-
-

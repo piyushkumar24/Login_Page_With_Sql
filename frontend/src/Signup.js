@@ -15,6 +15,7 @@ function Signup() {
     const handleInput = (event) => {
         setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
     };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const validationErrors = SignupValidation(values);
@@ -25,7 +26,7 @@ function Signup() {
             validationErrors.email === '' &&
             validationErrors.password === ''
         ) {
-            axios.post('https://sql-login-page-backend.onrender.com/signup', values)
+            axios.post('http://localhost:8081/signup', values)
                 .then((res) => {
                     navigate('/');
                 })
