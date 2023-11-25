@@ -17,7 +17,6 @@ function Home({ email }) {
     alert(res.data.message);
 })
 .catch((err) => console.log(err));
-
             }
         }
     };
